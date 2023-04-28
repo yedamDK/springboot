@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 	  layout:decorate="~{template/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+.sprite {background-color: yellowGreen}
+</style>
+</head>
+<body>
+<div layout:fragment="content">
+	<div th:text="${#request.contextPath}">컨텍스트패스</div>
+	<!-- th:text 값이 나오게 되어서 컨텍스트패스 가 나오지 않음 -->
+	<!--/* [[${#request.contextPath}]]
+	<th:block th:each="emp : ${empList}">
+		[[${emp.firstName}]]
+	</th:block> <br> */-->
+	<span th:text="${'<font color=red>test</font>'}"></span><br>
+	<span th:utext="${'<font color=red>test</font>'}"></span><br>
+	properties : [[#{site.upload}]] <br>
+	 	[(${'<font color=red>test</font>'})]<br>
+	 	[[${'<font color=red>test</font>'}]]<br>
+	전체사원수 : <span th:text= "${#lists.size(empList)}"></span><br>
+	<!--/* 전체사원수 : <span >[[th:text= "${#lists.size(empList)}"]]</span> */-->
+	
+	<table>
+	 <tr >
+	 <th>index</th>
+	 <th>no</th>
+	 <th>employee_id</th>
+	 <th>first_name</th>
+	 <th>last_name</th>
+	 </tr>
+	<tr th:each="emp,st : ${empList}" th:class="${st.odd}?sprite:_">
+	<!-- th:each="emp,st에서 에서 st를 생략하면 st 대신에 empStat가 들어가야 된다.(st대신에 하고 싶은 대로 할 수 있다.) -->
+	<!-- "_"는 아무것도 없다를 의미 -->
+	<!-- index는 0부터 시작 count는 1부터 시작 -->
+	<!-- <tr th:each="emp,st : ${empList}" th:class="${st.odd}?sprite:_" th:object="emp">
+	 th:object="emp"를 쓰면 ${emp.employeeId} 대신에 *{employeeId}가능-->
+	 <td th:text="${st.index}"></td>
+	 <td th:text="${st.count}"></td>
+	 <td th:text="${emp.employeeId}"></td>
+	 <td><a th:href="'update?empid='+${emp.employeeId}" th:text="${emp.firstName}">사원명</a></td>
+	 <td><a th:href="|update?empid=${emp.employeeId}|" th:text="${emp.firstName}">사원명</a></td>
+	 <td><a th:href="@{update(empid=${emp.employeeId}, fname=${emp.firstName})}" th:text="${emp.firstName}">사원명</a></td>
+	 <!-- 괄호 안의 내용이 쿼리스트링으로 바뀐다. -->
+	 <td th:text="${emp.lastName}"></td>
+	 <td th:text="${#dates.format(emp.hireDate,'yyyy-MM-dd')}"></td>
+	 <td th:text="${#numbers.formatInteger(emp.salary,3,'COMMA')}"></td>
+	 <!-- 'POINT', 'COMMA', 'WHITESPACE', 'NONE' or 'DEFAULT' (by locale). -->
+	  <td th:text="${#numbers.formatCurrency(emp.salary)}"></td>
+	 <td><button th:if="${emp.salary}>10000">수정</button></td>
+	 </tr>
+	</table>
+</div>
+</body>
+</html>
