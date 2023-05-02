@@ -39,7 +39,7 @@ public class MemberVO implements UserDetails {
 	}
 	@Override
 	public boolean isAccountNonExpired() {
-		// 
+		// 비번 유효기간? 변경할 기간??
 		return true;
 	}
 	@Override
